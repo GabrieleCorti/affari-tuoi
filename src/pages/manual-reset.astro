@@ -1,0 +1,14 @@
+---
+import MainLayout from "../layout/MainLayout.astro";
+---
+
+<MainLayout>
+  <h1>Reset manuale completato</h1>
+</MainLayout>
+<script type="module">
+  import { actions } from "astro:actions";
+
+  window.addEventListener("DOMContentLoaded", async () => {
+    await actions.resetGame();
+  });
+</script>

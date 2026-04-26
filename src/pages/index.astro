@@ -1,17 +1,80 @@
 ---
-
+import { Image } from "astro:assets";
+import MainLayout from "../layout/MainLayout.astro";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<MainLayout>
+  <ul class="space-y-2">
+    <li><button data-color="red" data-index="0" class="cursor-pointer transition-all disabled:cursor-not-allowed disabled:bg-gray-500 disabled:-translate-x-12 px-5 py-2 bg-red-500 text-white font-semibold text-4xl min-w-60 text-end">Item 1</button></li>
+    <li><button data-color="red" data-index="1" class="cursor-pointer transition-all disabled:cursor-not-allowed disabled:bg-gray-500 disabled:-translate-x-12 px-5 py-2 bg-red-500 text-white font-semibold text-4xl min-w-60 text-end">Item 1</button></li>
+    <li><button data-color="red" data-index="2" class="cursor-pointer transition-all disabled:cursor-not-allowed disabled:bg-gray-500 disabled:-translate-x-12 px-5 py-2 bg-red-500 text-white font-semibold text-4xl min-w-60 text-end">Item 1</button></li>
+    <li><button data-color="red" data-index="3" class="cursor-pointer transition-all disabled:cursor-not-allowed disabled:bg-gray-500 disabled:-translate-x-12 px-5 py-2 bg-red-500 text-white font-semibold text-4xl min-w-60 text-end">Item 1</button></li>
+    <li><button data-color="red" data-index="4" class="cursor-pointer transition-all disabled:cursor-not-allowed disabled:bg-gray-500 disabled:-translate-x-12 px-5 py-2 bg-red-500 text-white font-semibold text-4xl min-w-60 text-end">Item 1</button></li>
+    <li><button data-color="red" data-index="5" class="cursor-pointer transition-all disabled:cursor-not-allowed disabled:bg-gray-500 disabled:-translate-x-12 px-5 py-2 bg-red-500 text-white font-semibold text-4xl min-w-60 text-end">Item 1</button></li>
+    <li><button data-color="red" data-index="6" class="cursor-pointer transition-all disabled:cursor-not-allowed disabled:bg-gray-500 disabled:-translate-x-12 px-5 py-2 bg-red-500 text-white font-semibold text-4xl min-w-60 text-end">Item 1</button></li>
+    <li><button data-color="red" data-index="7" class="cursor-pointer transition-all disabled:cursor-not-allowed disabled:bg-gray-500 disabled:-translate-x-12 px-5 py-2 bg-red-500 text-white font-semibold text-4xl min-w-60 text-end">Item 1</button></li>
+    <li><button data-color="red" data-index="8" class="cursor-pointer transition-all disabled:cursor-not-allowed disabled:bg-gray-500 disabled:-translate-x-12 px-5 py-2 bg-red-500 text-white font-semibold text-4xl min-w-60 text-end">Item 1</button></li>
+    <li><button data-color="red" data-index="9" class="cursor-pointer transition-all disabled:cursor-not-allowed disabled:bg-gray-500 disabled:-translate-x-12 px-5 py-2 bg-red-500 text-white font-semibold text-4xl min-w-60 text-end">Item 1</button></li>
+  </ul>
+  <ul class="space-y-2">
+     <li><button data-color="blue" data-index="0" class="cursor-pointer transition-all disabled:cursor-not-allowed disabled:bg-gray-500 disabled:translate-x-12 px-5 py-2 bg-blue-500 text-white font-semibold text-4xl min-w-60 text-start">Item 1</button></li>
+    <li><button data-color="blue" data-index="1" class="cursor-pointer transition-all disabled:cursor-not-allowed disabled:bg-gray-500 disabled:translate-x-12 px-5 py-2 bg-blue-500 text-white font-semibold text-4xl min-w-60 text-start">Item 1</button></li>
+    <li><button data-color="blue" data-index="2" class="cursor-pointer transition-all disabled:cursor-not-allowed disabled:bg-gray-500 disabled:translate-x-12 px-5 py-2 bg-blue-500 text-white font-semibold text-4xl min-w-60 text-start">Item 1</button></li>
+    <li><button data-color="blue" data-index="3" class="cursor-pointer transition-all disabled:cursor-not-allowed disabled:bg-gray-500 disabled:translate-x-12 px-5 py-2 bg-blue-500 text-white font-semibold text-4xl min-w-60 text-start">Item 1</button></li>
+    <li><button data-color="blue" data-index="4" class="cursor-pointer transition-all disabled:cursor-not-allowed disabled:bg-gray-500 disabled:translate-x-12 px-5 py-2 bg-blue-500 text-white font-semibold text-4xl min-w-60 text-start">Item 1</button></li>
+    <li><button data-color="blue" data-index="5" class="cursor-pointer transition-all disabled:cursor-not-allowed disabled:bg-gray-500 disabled:translate-x-12 px-5 py-2 bg-blue-500 text-white font-semibold text-4xl min-w-60 text-start">Item 1</button></li>
+    <li><button data-color="blue" data-index="6" class="cursor-pointer transition-all disabled:cursor-not-allowed disabled:bg-gray-500 disabled:translate-x-12 px-5 py-2 bg-blue-500 text-white font-semibold text-4xl min-w-60 text-start">Item 1</button></li>
+    <li><button data-color="blue" data-index="7" class="cursor-pointer transition-all disabled:cursor-not-allowed disabled:bg-gray-500 disabled:translate-x-12 px-5 py-2 bg-blue-500 text-white font-semibold text-4xl min-w-60 text-start">Item 1</button></li>
+    <li><button data-color="blue" data-index="8" class="cursor-pointer transition-all disabled:cursor-not-allowed disabled:bg-gray-500 disabled:translate-x-12 px-5 py-2 bg-blue-500 text-white font-semibold text-4xl min-w-60 text-start">Item 1</button></li>
+    <li><button data-color="blue" data-index="9" class="cursor-pointer transition-all disabled:cursor-not-allowed disabled:bg-gray-500 disabled:translate-x-12 px-5 py-2 bg-blue-500 text-white font-semibold text-4xl min-w-60 text-start">Item 1</button></li>
+  </ul>
+  <div aria-hidden="true" id="call" class="aria-hidden:hidden absolute top-0 left-0 right-0 bottom-0 flex justify-center items-center bg-gray-500/45" >
+    <Image src="/telefono.jpg" alt="telefono" width={350} height={300}></Image>
+  </div>
+  <div aria-hidden="true" id="challenge" class="aria-hidden:hidden absolute top-0 left-0 right-0 bottom-0 flex justify-center items-center bg-gray-500/45" >
+    <h2 class="text-9xl text-red-700">SFIDA</h2>
+  </div>
+</MainLayout>
+<script>
+  import { actions } from "astro:actions";
+  import type { GameState } from "../stateType";
+
+  const updateButtons = (data: GameState) => {
+    data.redPacks.forEach((packState, i) => {
+      const button = document.querySelector(`button[data-color="red"][data-index="${i}"]`);
+      if (button) (button as HTMLButtonElement).disabled = packState === "opened";
+    });
+
+    data.bluePacks.forEach((packState, i) => {
+      const button = document.querySelector(`button[data-color="blue"][data-index="${i}"]`);
+      if (button) (button as HTMLButtonElement).disabled = packState === "opened";
+    });
+  const call = document.getElementById('call');
+      const challenge = document.getElementById('challenge');
+    if (data.currentEvent === 'none') {
+      call?.setAttribute('aria-hidden', "true");
+      challenge?.setAttribute('aria-hidden', "true");
+    }
+    if (data.currentEvent === 'challenge') {
+      call?.setAttribute('aria-hidden', "true");
+      challenge?.setAttribute('aria-hidden', "false");
+    }
+    if (data.currentEvent === 'call') {
+      
+      call?.setAttribute('aria-hidden', "false");
+      challenge?.setAttribute('aria-hidden', "true");
+    }
+  };
+
+  const pollState = async () => {
+    const state = await actions.getsPacksState();
+    console.log(state);
+    
+    if (state.data) updateButtons(state.data);
+  };
+
+  document.onload = pollState
+
+  pollState();
+  setInterval(pollState, 3000);
+</script>
