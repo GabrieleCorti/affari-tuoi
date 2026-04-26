@@ -209,108 +209,32 @@ import MainLayout from "../layout/MainLayout.astro";
 </MainLayout>
 <script>
   import { actions } from "astro:actions";
-  import type { GameState } from "../stateType";
+  import { attachPackButtonHandlers, updateAllPackButtons } from "../utils/buttonHelpers";
+  import { attachControlButtonHandlers } from "../utils/controlHelpers";
+  import { setupPolling } from "../utils/pollingHelpers";
 
-  document.getElementById("reset")?.addEventListener("click", async () => {
-    const { data } = await actions.resetGame();
-    if (!data) return;
-
-    document
-      .querySelectorAll("button[data-color][data-index]")
-      .forEach((button) => {
-        button.setAttribute("aria-disabled", "false");
-      });
-  });
-
-  document
-    .getElementById("call")
-    ?.addEventListener("click", async () => actions.sendEvent("call"));
-  document.getElementById("challenge")?.addEventListener("click", async () => {
-    const { data } = await actions.getsPacksState();
-    if (data && data.currentEvent === "challenge") {
-      await actions.sendEvent("none");
-    } else {
-      await actions.sendEvent("challenge");
-    }
-  });
-  document
-    .querySelectorAll("button[data-color][data-index]")
-    .forEach((button) => {
-      button.addEventListener("click", async () => {
-        const color = (button as HTMLButtonElement).dataset.color as
-          | "red"
-          | "blue";
-        const index = (button as HTMLButtonElement).dataset.index as string;
-
-        const state =
-          button.getAttribute("aria-disabled") === "true"
-            ? await actions.closePack({
-                color,
-                index,
-              })
-            : await actions.openPack({
-                color,
-                index,
-              });
-
-        state.data?.redPacks.forEach((packState, i) => {
-          const targetButton = document.querySelector(
-            `button[data-color="red"][data-index="${i}"]`,
-          ) as HTMLButtonElement;
-          if (targetButton) {
-            targetButton.setAttribute(
-              "aria-disabled",
-              packState === "opened" ? "true" : "false",
-            );
-          }
-        });
-        state.data?.bluePacks.forEach((packState, i) => {
-          const targetButton = document.querySelector(
-            `button[data-color="blue"][data-index="${i}"]`,
-          ) as HTMLButtonElement;
-          if (targetButton) {
-            targetButton.setAttribute(
-              "aria-disabled",
-              packState === "opened" ? "true" : "false",
-            );
-          }
-        });
-      });
-    });
-
-  const updateButtons = (data: GameState) => {
-    data.redPacks.forEach((packState, i) => {
-      const button = document.querySelector(
-        `button[data-color="red"][data-index="${i}"]`,
-      );
-      if (button)
-        (button as HTMLButtonElement).setAttribute(
-          "aria-disabled",
-          packState === "opened" ? "true" : "false",
-        );
-    });
-
-    data.bluePacks.forEach((packState, i) => {
-      const button = document.querySelector(
-        `button[data-color="blue"][data-index="${i}"]`,
-      );
-      if (button)
-        (button as HTMLButtonElement).setAttribute(
-          "aria-disabled",
-          packState === "opened" ? "true" : "false",
-        );
-    });
-  };
-
+  // Set up polling to sync state with server
   const pollState = async () => {
     const state = await actions.getsPacksState();
-    console.log(state);
-
-    if (state.data) updateButtons(state.data);
+    if (state.data) {
+      updateAllPackButtons(state.data);
+    }
   };
 
-  document.onload = pollState;
+  // Initialize everything when DOM is ready
+  document.addEventListener("DOMContentLoaded", () => {
+    attachPackButtonHandlers();
+    attachControlButtonHandlers();
+    setupPolling(pollState);
+  });
 
-  pollState();
-  setInterval(pollState, 3000);
+  // Also try initialization if already loaded
+  if (document.readyState === "loading") {
+    // DOM still loading
+  } else {
+    // DOM already loaded
+    attachPackButtonHandlers();
+    attachControlButtonHandlers();
+    setupPolling(pollState);
+  }
 </script>

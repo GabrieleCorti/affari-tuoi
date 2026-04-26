@@ -37,44 +37,22 @@ import MainLayout from "../layout/MainLayout.astro";
 </MainLayout>
 <script>
   import { actions } from "astro:actions";
-  import type { GameState } from "../stateType";
-
-  const updateButtons = (data: GameState) => {
-    data.redPacks.forEach((packState, i) => {
-      const button = document.querySelector(`button[data-color="red"][data-index="${i}"]`);
-      if (button) (button as HTMLButtonElement).disabled = packState === "opened";
-    });
-
-    data.bluePacks.forEach((packState, i) => {
-      const button = document.querySelector(`button[data-color="blue"][data-index="${i}"]`);
-      if (button) (button as HTMLButtonElement).disabled = packState === "opened";
-    });
-  const call = document.getElementById('call');
-      const challenge = document.getElementById('challenge');
-    if (data.currentEvent === 'none') {
-      call?.setAttribute('aria-hidden', "true");
-      challenge?.setAttribute('aria-hidden', "true");
-    }
-    if (data.currentEvent === 'challenge') {
-      call?.setAttribute('aria-hidden', "true");
-      challenge?.setAttribute('aria-hidden', "false");
-    }
-    if (data.currentEvent === 'call') {
-      
-      call?.setAttribute('aria-hidden', "false");
-      challenge?.setAttribute('aria-hidden', "true");
-    }
-  };
+  import { updateUI } from "../utils/domHelpers";
+  import { setupPolling } from "../utils/pollingHelpers";
 
   const pollState = async () => {
     const state = await actions.getsPacksState();
-    console.log(state);
-    
-    if (state.data) updateButtons(state.data);
+    if (state.data) {
+      updateUI(state.data);
+    }
   };
 
-  document.onload = pollState
-
-  pollState();
-  setInterval(pollState, 3000);
+  // Initialize when DOM is ready
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => {
+      setupPolling(pollState);
+    });
+  } else {
+    setupPolling(pollState);
+  }
 </script>
