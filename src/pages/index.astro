@@ -39,7 +39,7 @@ import MainLayout from "../layout/MainLayout.astro";
   import { actions } from "astro:actions";
   import { updateUI } from "../utils/domHelpers";
   import { setupPolling } from "../utils/pollingHelpers";
-
+  //c
   const pollState = async () => {
     const state = await actions.getsPacksState();
     if (state.data) {
