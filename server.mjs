@@ -2,6 +2,7 @@ import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { join, extname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { WebSocketServer, WebSocket } from 'ws';
 
 const MIME = {
@@ -18,7 +19,7 @@ const MIME = {
 };
 
 async function serveStatic(req, res) {
-  const clientDir = new URL('./dist/client', import.meta.url).pathname;
+  const clientDir = fileURLToPath(new URL('./dist/client', import.meta.url));
   const filePath = join(clientDir, req.url.split('?')[0]);
   if (existsSync(filePath)) {
     const ext = extname(filePath);
