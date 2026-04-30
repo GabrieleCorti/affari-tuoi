@@ -23,6 +23,7 @@ const openPack = createPackAction("opened");
 const closePack = createPackAction("closed");
 
 const resetGame = defineAction({
+  input: z.void(),
   handler: async () => {
     const timeout = getCallTimeout();
     if (timeout) {
