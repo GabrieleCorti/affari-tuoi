@@ -27,3 +27,4 @@ export const getCallTimeout = (): ReturnType<typeof setTimeout> | null =>
 export const setCallTimeout = (id: ReturnType<typeof setTimeout> | null): void => {
   globalThis.__callTimeout = id;
 };
+//a
