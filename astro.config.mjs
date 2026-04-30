@@ -1,17 +1,24 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
-
 import tailwindcss from '@tailwindcss/vite';
-
 import node from '@astrojs/node';
 
-import vercel from '@astrojs/vercel';
+/** @type {import('vite').Plugin} */
+const webSocketPlugin = {
+  name: 'websocket-dev',
+  configureServer(server) {
+    server.httpServer?.on('upgrade', async (req, socket, head) => {
+      if (req.url !== '/ws') return;
+      const { handleUpgrade } = await import('./src/lib/wsManager.ts');
+      handleUpgrade(req, socket, head);
+    });
+  },
+};
 
-// https://astro.build/config
 export default defineConfig({
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss(), webSocketPlugin],
   },
   output: 'server',
-  adapter: vercel()
+  adapter: node({ mode: 'middleware' }),
 });

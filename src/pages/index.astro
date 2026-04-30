@@ -36,23 +36,16 @@ import MainLayout from "../layout/MainLayout.astro";
   </div>
 </MainLayout>
 <script>
-  import { actions } from "astro:actions";
   import { updateUI } from "../utils/domHelpers";
-  import { setupPolling } from "../utils/pollingHelpers";
-  //c
-  const pollState = async () => {
-    const state = await actions.getsPacksState();
-    if (state.data) {
-      updateUI(state.data);
-    }
+
+  const protocol = location.protocol === "https:" ? "wss:" : "ws:";
+  const ws = new WebSocket(`${protocol}//${location.host}/ws`);
+
+  ws.onmessage = (event) => {
+    updateUI(JSON.parse(event.data));
   };
 
-  // Initialize when DOM is ready
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", () => {
-      setupPolling(pollState);
-    });
-  } else {
-    setupPolling(pollState);
-  }
+  ws.onclose = () => {
+    setTimeout(() => location.reload(), 2000);
+  };
 </script>

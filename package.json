@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "start": "node server.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },
@@ -16,6 +17,10 @@
     "@astrojs/vercel": "^10.0.6",
     "@tailwindcss/vite": "^4.2.4",
     "astro": "^6.1.9",
-    "tailwindcss": "^4.2.4"
+    "tailwindcss": "^4.2.4",
+    "ws": "^8.20.0"
+  },
+  "devDependencies": {
+    "@types/ws": "^8.18.1"
   }
 }

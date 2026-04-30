@@ -209,29 +209,48 @@ import MainLayout from "../layout/MainLayout.astro";
 </MainLayout>
 <script>
   import { actions } from "astro:actions";
-  import { attachPackButtonHandlers, updateAllPackButtons } from "../utils/buttonHelpers";
-  import { attachControlButtonHandlers } from "../utils/controlHelpers";
-  import { setupPolling } from "../utils/pollingHelpers";
-  import { bumpVersion, isLatestVersion } from "../utils/requestVersion";
+  import { updateAllPackButtons } from "../utils/buttonHelpers";
+  import type { GameState } from "../stateType";
 
-  // Set up polling to sync state with server
-  const pollState = async () => {
-    const myVersion = bumpVersion();
-    const state = await actions.getsPacksState();
-    if (state.data && isLatestVersion(myVersion)) {
-      updateAllPackButtons(state.data);
-    }
+  let currentState: GameState = {
+    redPacks: ["closed","closed","closed","closed","closed","closed","closed","closed","closed","closed"],
+    bluePacks: ["closed","closed","closed","closed","closed","closed","closed","closed","closed","closed"],
+    currentEvent: "none",
   };
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", () => {
-      attachPackButtonHandlers();
-      attachControlButtonHandlers();
-      setupPolling(pollState);
+  // WebSocket — receives all state updates
+  const protocol = location.protocol === "https:" ? "wss:" : "ws:";
+  const ws = new WebSocket(`${protocol}//${location.host}/ws`);
+
+  ws.onmessage = (event) => {
+    currentState = JSON.parse(event.data);
+    updateAllPackButtons(currentState);
+  };
+
+  ws.onclose = () => {
+    setTimeout(() => location.reload(), 2000);
+  };
+
+  // Pack buttons — just fire and let WebSocket update UI
+  document.querySelectorAll<HTMLButtonElement>("button[data-color][data-index]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const color = btn.dataset.color as "red" | "blue";
+      const index = btn.dataset.index!;
+      const isOpen = btn.getAttribute("aria-disabled") === "true";
+      if (isOpen) actions.closePack({ color, index });
+      else actions.openPack({ color, index });
     });
-  } else {
-    attachPackButtonHandlers();
-    attachControlButtonHandlers();
-    setupPolling(pollState);
-  }
+  });
+
+  document.getElementById("call")?.addEventListener("click", () => {
+    actions.sendEvent("call");
+  });
+
+  document.getElementById("challenge")?.addEventListener("click", () => {
+    actions.sendEvent(currentState.currentEvent === "challenge" ? "none" : "challenge");
+  });
+
+  document.getElementById("reset")?.addEventListener("click", () => {
+    actions.resetGame();
+  });
 </script>

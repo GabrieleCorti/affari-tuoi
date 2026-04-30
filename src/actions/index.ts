@@ -3,13 +3,8 @@ import { z } from "astro/zod";
 import { DEFAULT_STATE } from "../stateType";
 import { updatePackState, setCurrentEvent, clearCurrentEvent } from "../utils/stateHelpers";
 import { createEventTimeout } from "../utils/eventHelpers";
+import { getState, setState, getCallTimeout, setCallTimeout } from "../lib/state";
 
-let gameState = structuredClone(DEFAULT_STATE);
-let eventTimeoutId: ReturnType<typeof setTimeout> | null = null;
-
-/**
- * Creates a pack mutation action (open/close)
- */
 const createPackAction = (newState: "opened" | "closed") =>
   defineAction({
     input: z.object({
@@ -20,8 +15,7 @@ const createPackAction = (newState: "opened" | "closed") =>
         .pipe(z.number().int().min(0).max(9)),
     }),
     handler: async ({ color, index }) => {
-      gameState = updatePackState(gameState, color, index, newState);
-      return gameState;
+      setState(updatePackState(getState(), color, index, newState));
     },
   });
 
@@ -30,34 +24,33 @@ const closePack = createPackAction("closed");
 
 const resetGame = defineAction({
   handler: async () => {
-    if (eventTimeoutId) {
-      clearTimeout(eventTimeoutId);
-      eventTimeoutId = null;
+    const timeout = getCallTimeout();
+    if (timeout) {
+      clearTimeout(timeout);
+      setCallTimeout(null);
     }
-    gameState = structuredClone(DEFAULT_STATE);
-    return gameState;
+    setState(structuredClone(DEFAULT_STATE));
   },
 });
 
 const getsPacksState = defineAction({
-  handler: async () => gameState,
+  handler: async () => getState(),
 });
 
 const sendEvent = defineAction({
   input: z.enum(["none", "call", "challenge"]),
   handler: async (event) => {
-    gameState = setCurrentEvent(gameState, event);
-    
-    if (event === "call" && eventTimeoutId) {
-      clearTimeout(eventTimeoutId);
-    }
-    
     if (event === "call") {
-      eventTimeoutId = createEventTimeout(() => {
-        gameState = clearCurrentEvent(gameState);
-        eventTimeoutId = null;
-      });
+      const existing = getCallTimeout();
+      if (existing) clearTimeout(existing);
+      setCallTimeout(
+        createEventTimeout(() => {
+          setState(clearCurrentEvent(getState()));
+          setCallTimeout(null);
+        })
+      );
     }
+    setState(setCurrentEvent(getState(), event));
   },
 });
 
