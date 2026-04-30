@@ -1,6 +1,6 @@
 import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
-import { existsSync } from 'node:fs';
+import { existsSync, statSync } from 'node:fs';
 import { join, extname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { WebSocketServer, WebSocket } from 'ws';
@@ -21,7 +21,7 @@ const MIME = {
 async function serveStatic(req, res) {
   const clientDir = fileURLToPath(new URL('./dist/client', import.meta.url));
   const filePath = join(clientDir, req.url.split('?')[0]);
-  if (existsSync(filePath)) {
+  if (existsSync(filePath) && !statSync(filePath).isDirectory()) {
     const ext = extname(filePath);
     const data = await readFile(filePath);
     res.writeHead(200, { 'Content-Type': MIME[ext] ?? 'application/octet-stream' });
