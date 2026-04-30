@@ -223,18 +223,13 @@ import MainLayout from "../layout/MainLayout.astro";
     }
   };
 
-  // Initialize everything when DOM is ready
-  document.addEventListener("DOMContentLoaded", () => {
-    attachPackButtonHandlers();
-    attachControlButtonHandlers();
-    setupPolling(pollState);
-  });
-
-  // Also try initialization if already loaded
   if (document.readyState === "loading") {
-    // DOM still loading
+    document.addEventListener("DOMContentLoaded", () => {
+      attachPackButtonHandlers();
+      attachControlButtonHandlers();
+      setupPolling(pollState);
+    });
   } else {
-    // DOM already loaded
     attachPackButtonHandlers();
     attachControlButtonHandlers();
     setupPolling(pollState);

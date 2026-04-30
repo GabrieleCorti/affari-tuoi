@@ -1,14 +1,18 @@
 import { actions } from "astro:actions";
-import { updateAllPackButtons, resetAllPackButtons } from "./buttonHelpers";
+import { updateAllPackButtons } from "./buttonHelpers";
+import { bumpVersion, isLatestVersion } from "./requestVersion";
 
 /**
  * Handles the reset button click
  */
 export const handleResetClick = async (): Promise<void> => {
   try {
+    const myVersion = bumpVersion();
     const { data } = await actions.resetGame();
     if (!data) return;
-    resetAllPackButtons();
+    if (isLatestVersion(myVersion)) {
+      updateAllPackButtons(data);
+    }
   } catch (error) {
     console.error("Error resetting game:", error);
   }
