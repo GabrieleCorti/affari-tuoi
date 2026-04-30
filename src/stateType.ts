@@ -62,14 +62,14 @@ export const blue = [
   "Servizio bagagli edu",
 ] as const;
 export const red = [
-  "Cioccolatini",
-  "Sfida o cestino cortesia",
+  "Sfida o cioccolatini",
   "2€ caramelle",
-  "Sfida o cestino cortesia",
+  "Sfida o cioccolatini",
   "Souvenir assisi",
-  "Sfida o cestino cortesia",
+  "Sfida o cioccolatini",
   "Regalo",
-  "Sfida o cestino cortesia",
+  "Sfida o cioccolatini",
+  "Regalo",
   "Regalo",
   "Servizio bagagli",
 ] as const;
