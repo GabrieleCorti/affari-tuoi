@@ -1,5 +1,6 @@
 ---
 import MainLayout from "../layout/MainLayout.astro";
+import { red, blue } from "../stateType";
 ---
 
 <MainLayout>
@@ -17,7 +18,21 @@ import MainLayout from "../layout/MainLayout.astro";
     >
     <ul class="space-y-2 w-full">
       <li class="py-2.5"><h3 class="font-bold">Rossi</h3></li>
-      <li>
+      {
+        red.map((name, i) => (
+          <li>
+            <button
+              aria-disabled="false"
+              data-color="red"
+              data-index={String(i)}
+              class="cursor-pointer transition-all aria-disabled:bg-gray-500 px-5 py-2 bg-red-500 text-white font-semibold text-4xl w-full"
+            >
+              {name}
+            </button>
+          </li>
+        ))
+      }
+      <!-- <li>
         <button
           aria-disabled="false"
           data-color="red"
@@ -106,9 +121,23 @@ import MainLayout from "../layout/MainLayout.astro";
           class="cursor-pointer transition-all aria-disabled:bg-gray-500 px-5 py-2 bg-red-500 text-white font-semibold text-4xl w-full"
           >Servizio bagagli</button
         >
-      </li>
+      </li> -->
       <li class="py-2.5"><h3 class="font-bold">Blue</h3></li>
-      <li>
+      {
+        blue.map((name, i) => (
+          <li>
+            <button
+              aria-disabled="false"
+              data-color="blue"
+              data-index={String(i)}
+              class="cursor-pointer transition-all aria-disabled:bg-gray-500 px-5 py-2 bg-blue-500 text-white font-semibold text-4xl w-full"
+            >
+              {name}
+            </button>
+          </li>
+        ))
+      }
+      <!-- <li>
         <button
           aria-disabled="false"
           data-color="blue"
@@ -197,7 +226,7 @@ import MainLayout from "../layout/MainLayout.astro";
           class="cursor-pointer transition-all aria-disabled:bg-gray-500 px-5 py-2 bg-blue-500 text-white font-semibold text-4xl w-full"
           >Servizio bagagli edu</button
         >
-      </li>
+      </li> -->
     </ul>
     <h3 class="font-bold mt-2.5 mb-2.5">RESET TOTALE</h3>
     <button
@@ -213,8 +242,30 @@ import MainLayout from "../layout/MainLayout.astro";
   import type { GameState } from "../stateType";
 
   let currentState: GameState = {
-    redPacks: ["closed","closed","closed","closed","closed","closed","closed","closed","closed","closed"],
-    bluePacks: ["closed","closed","closed","closed","closed","closed","closed","closed","closed","closed"],
+    redPacks: [
+      "closed",
+      "closed",
+      "closed",
+      "closed",
+      "closed",
+      "closed",
+      "closed",
+      "closed",
+      "closed",
+      "closed",
+    ],
+    bluePacks: [
+      "closed",
+      "closed",
+      "closed",
+      "closed",
+      "closed",
+      "closed",
+      "closed",
+      "closed",
+      "closed",
+      "closed",
+    ],
     currentEvent: "none",
   };
 
@@ -232,22 +283,26 @@ import MainLayout from "../layout/MainLayout.astro";
   };
 
   // Pack buttons — just fire and let WebSocket update UI
-  document.querySelectorAll<HTMLButtonElement>("button[data-color][data-index]").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const color = btn.dataset.color as "red" | "blue";
-      const index = btn.dataset.index!;
-      const isOpen = btn.getAttribute("aria-disabled") === "true";
-      if (isOpen) actions.closePack({ color, index });
-      else actions.openPack({ color, index });
+  document
+    .querySelectorAll<HTMLButtonElement>("button[data-color][data-index]")
+    .forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const color = btn.dataset.color as "red" | "blue";
+        const index = btn.dataset.index!;
+        const isOpen = btn.getAttribute("aria-disabled") === "true";
+        if (isOpen) actions.closePack({ color, index });
+        else actions.openPack({ color, index });
+      });
     });
-  });
 
   document.getElementById("call")?.addEventListener("click", () => {
     actions.sendEvent("call");
   });
 
   document.getElementById("challenge")?.addEventListener("click", () => {
-    actions.sendEvent(currentState.currentEvent === "challenge" ? "none" : "challenge");
+    actions.sendEvent(
+      currentState.currentEvent === "challenge" ? "none" : "challenge",
+    );
   });
 
   document.getElementById("reset")?.addEventListener("click", () => {

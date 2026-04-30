@@ -13,7 +13,7 @@ export type Packs = [
   PackState,
 ];
 
-export type GameEvent = 'none' | 'call' | 'challenge'
+export type GameEvent = "none" | "call" | "challenge";
 
 export interface GameState {
   redPacks: Packs;
@@ -46,7 +46,30 @@ export const DEFAULT_STATE: GameState = {
     "closed",
     "closed",
   ],
-  currentEvent: 'none',
+  currentEvent: "none",
 };
 
-
+export const blue = [
+  "Buonanotte da Roby e Banza",
+  "Sfida o cestino cortesia",
+  "Scelta preghiera del giorno",
+  "Sfida o cestino cortesia",
+  "100€",
+  "Sfida o cestino cortesia",
+  "Cassa d'acqua",
+  "Sfida o cestino cortesia",
+  "Svegliarsi 30 minuti prima",
+  "Servizio bagagli edu",
+] as const;
+export const red = [
+  "Cioccolatini",
+  "Sfida o cestino cortesia",
+  "2€ caramelle",
+  "Sfida o cestino cortesia",
+  "Souvenir assisi",
+  "Sfida o cestino cortesia",
+  "Regalo",
+  "Sfida o cestino cortesia",
+  "Regalo",
+  "Servizio bagagli",
+] as const;
