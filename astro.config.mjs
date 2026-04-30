@@ -17,6 +17,9 @@ const webSocketPlugin = {
 
 export default defineConfig({
   site: 'https://affari-tuoi-production.up.railway.app',
+  security: {
+    checkOrigin: false,
+  },
   vite: {
     plugins: [tailwindcss(), webSocketPlugin],
   },
