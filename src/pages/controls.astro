@@ -212,11 +212,13 @@ import MainLayout from "../layout/MainLayout.astro";
   import { attachPackButtonHandlers, updateAllPackButtons } from "../utils/buttonHelpers";
   import { attachControlButtonHandlers } from "../utils/controlHelpers";
   import { setupPolling } from "../utils/pollingHelpers";
+  import { bumpVersion, isLatestVersion } from "../utils/requestVersion";
 
   // Set up polling to sync state with server
   const pollState = async () => {
+    const myVersion = bumpVersion();
     const state = await actions.getsPacksState();
-    if (state.data) {
+    if (state.data && isLatestVersion(myVersion)) {
       updateAllPackButtons(state.data);
     }
   };

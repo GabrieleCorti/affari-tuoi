@@ -1,5 +1,6 @@
 import type { GameState } from "../stateType";
 import { actions } from "astro:actions";
+import { bumpVersion, isLatestVersion } from "./requestVersion";
 
 /**
  * Updates button aria-disabled state based on pack state
@@ -59,13 +60,14 @@ export const handlePackButtonClick = async (
   if (!color || !index) return;
 
   const isCurrentlyOpened = getButtonAriaDisabled(button);
-  
+  const myVersion = bumpVersion();
+
   try {
     const state = isCurrentlyOpened
       ? await actions.closePack({ color, index })
       : await actions.openPack({ color, index });
 
-    if (state.data) {
+    if (state.data && isLatestVersion(myVersion)) {
       updateAllPackButtons(state.data);
     }
   } catch (error) {
